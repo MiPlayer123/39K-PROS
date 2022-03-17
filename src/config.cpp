@@ -18,7 +18,7 @@ MotorGroup leftDrive({LeftRear, LeftMid, LeftFront});
 MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
-IMU Intertial(3);
+IMU Intertial(19);
 RotationSensor LOdom(8);
 RotationSensor ROdom(16);
 ADIButton FrontSense('B');
@@ -54,6 +54,13 @@ AsyncMotionProfileControllerBuilder()
 
 std::shared_ptr<AsyncPositionController<double, double>> barControl =
   AsyncPosControllerBuilder()
-  .withMotor(1)
+  .withMotor(Bar)
   .withGains({7, 0, 0})
   .build();
+
+void setBrakes(){
+    leftDrive.setBrakeMode(brake);
+    rightDrive.setBrakeMode(brake);
+    Bar.setBrakeMode(hold);
+    Intake.setBrakeMode(coast);
+}

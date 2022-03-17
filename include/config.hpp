@@ -29,3 +29,5 @@ extern pros::ADIDigitalOut Pn;
 extern std::shared_ptr<OdomChassisController> chassis;
 extern std::shared_ptr<AsyncMotionProfileController> profileController;
 extern std::shared_ptr<AsyncPositionController<double, double>> barControl;
+
+void setBrakes();

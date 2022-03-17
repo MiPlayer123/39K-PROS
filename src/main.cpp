@@ -65,7 +65,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() { 
-    Motor(1).tarePosition();
+    Bar.tarePosition();
+    setBrakes();
 
     chassis->setState({0_in, 0_in, 0_deg});
     chassis->driveToPoint({1_ft, 1_ft});
