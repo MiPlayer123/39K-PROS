@@ -80,6 +80,7 @@ void opcontrol(void);
 #include <iostream>
 #include "okapi/api.hpp"
 #include "config.hpp"
+#include "voids.hpp"
 #include "odomDebug/odomDebug.hpp"
 #include "odomDebug/odomDebug.hpp"
 #include "autolib/api.hpp"

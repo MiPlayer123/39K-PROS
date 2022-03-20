@@ -19,11 +19,11 @@ MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
 IMU Intertial(19);
+IMU ClawInertial(12, IMUAxes::y);
 RotationSensor LOdom(9);
 RotationSensor ROdom(16, true);
 RotationSensor BarRot(2);
-ADIButton FrontSense('B');
-ADIButton RearSense('C');
+ADIButton FrontSense('C');
 
 // PNEUMATICS
 pros::ADIDigitalOut Pullback('F');
@@ -40,7 +40,7 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
     )
     .withDimensions({AbstractMotor::gearset::blue, 3/7}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::CARTESIAN)
+    .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::FRAME_TRANSFORMATION)
     .buildOdometry();
 
 std::shared_ptr<AsyncMotionProfileController> profileController =

@@ -25,6 +25,8 @@ void setStateOdom(OdomDebug::state_t state) {
 void resetSensors() {
 	// reset sensors and reset odometry
 	chassis->setState({0_in, 0_in, 0_deg});
+    ROdom.reset();
+    LOdom.reset();
 }
 
 /**
@@ -90,8 +92,8 @@ void autonomous() {
 	profileController->setTarget("A");
 	profileController->waitUntilSettled();
 
-    Pn.set_value(true);
-
+    closeClaw();
+    /*
     autolib::PathGenerator pathGenerator({
         10.0, // Maximum linear velocity of the Chassis in m/s
         10.0, // Maximum linear acceleration of the Chassis in m/s/s
@@ -105,6 +107,7 @@ void autonomous() {
     autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_ft );
 
     purePursuit.run( chassis->getState(), std::string("test") );
+    */
 }
  
  
