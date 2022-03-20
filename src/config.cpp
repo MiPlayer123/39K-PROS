@@ -38,7 +38,7 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
         {0.001, 0, 0.0001}, // Turn controller gains
         {0.001, 0, 0.0001}  // Angle controller gains (helps drive straight)
     )
-    .withDimensions(AbstractMotor::gearset::green, {{4_in, 13.5_in}, imev5GreenTPR})
+    .withDimensions({AbstractMotor::gearset::blue, 3/7}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
     .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::CARTESIAN)
     .buildOdometry();
@@ -56,7 +56,7 @@ AsyncMotionProfileControllerBuilder()
 std::shared_ptr<AsyncPositionController<double, double>> barControl =
   AsyncPosControllerBuilder()
   .withMotor(Bar)
-  .withGains({7, 0, 0})
+  .withGains({0.007, 0.0, 0.000075})
   .build();
 
 void setBrakes(){
