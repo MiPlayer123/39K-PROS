@@ -19,8 +19,9 @@ MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
 IMU Intertial(19);
-RotationSensor LOdom(8);
-RotationSensor ROdom(16);
+RotationSensor LOdom(9);
+RotationSensor ROdom(16, true);
+RotationSensor BarRot(2);
 ADIButton FrontSense('B');
 ADIButton RearSense('C');
 
@@ -37,9 +38,9 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
         {0.001, 0, 0.0001}, // Turn controller gains
         {0.001, 0, 0.0001}  // Angle controller gains (helps drive straight)
     )
-    .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
-     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.75_in, 7_in}, quadEncoderTPR}, StateMode::CARTESIAN)
+    .withDimensions(AbstractMotor::gearset::green, {{4_in, 13.5_in}, imev5GreenTPR})
+    .withSensors(LOdom, ROdom)
+    .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::CARTESIAN)
     .buildOdometry();
 
 std::shared_ptr<AsyncMotionProfileController> profileController =
@@ -59,8 +60,10 @@ std::shared_ptr<AsyncPositionController<double, double>> barControl =
   .build();
 
 void setBrakes(){
+    /*
     leftDrive.setBrakeMode(brake);
     rightDrive.setBrakeMode(brake);
     Bar.setBrakeMode(hold);
     Intake.setBrakeMode(coast);
+    */
 }
