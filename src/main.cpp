@@ -1,6 +1,7 @@
 #include "main.h"
 #include "okapi/api.hpp"
 using namespace okapi;
+//using namespace autolib;
  
 /**
  * A callback function for LLEMU's center button.
@@ -90,6 +91,20 @@ void autonomous() {
 	profileController->waitUntilSettled();
 
     Pn.set_value(true);
+
+    autolib::PathGenerator pathGenerator({
+        10.0, // Maximum linear velocity of the Chassis in m/s
+        10.0, // Maximum linear acceleration of the Chassis in m/s/s
+        15.0 // Maximum linear jerk of the Chassis in m/s/s/s
+    });
+
+    pathGenerator.generatePath({ autolib::Pose{ 1_ft, 1_ft, 270_deg }, autolib::Pose{ 1_ft, 0_ft, 90_deg } }, 
+    std::string("test")
+    );
+
+    autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_ft );
+
+    purePursuit.run( chassis->getState(), std::string("test") );
 }
  
  
