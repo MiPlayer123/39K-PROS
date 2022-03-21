@@ -19,18 +19,11 @@ MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
 IMU Intertial(19);
-<<<<<<< HEAD
 IMU ClawInertial(7, IMUAxes::y);
 RotationSensor LOdom(9);
 RotationSensor ROdom(16, true);
 RotationSensor BarRot(2);
 ADIButton FrontSense('C');
-=======
-RotationSensor LOdom(8);
-RotationSensor ROdom(16);
-ADIButton FrontSense('B');
-ADIButton RearSense('C');
->>>>>>> parent of 363cce0 (basic PurePursuit structure)
 
 // PNEUMATICS
 pros::ADIDigitalOut Pullback('F');
@@ -45,15 +38,9 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
         {0.001, 0, 0.0001}, // Turn controller gains
         {0.001, 0, 0.0001}  // Angle controller gains (helps drive straight)
     )
-<<<<<<< HEAD
     .withDimensions({AbstractMotor::gearset::blue, 3/7}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
     .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::FRAME_TRANSFORMATION)
-=======
-    .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
-     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.75_in, 7_in}, quadEncoderTPR}, StateMode::CARTESIAN)
->>>>>>> parent of 363cce0 (basic PurePursuit structure)
     .buildOdometry();
 
 std::shared_ptr<AsyncMotionProfileController> profileController =
@@ -73,15 +60,8 @@ std::shared_ptr<AsyncPositionController<double, double>> barControl =
   .build();
 
 void setBrakes(){
-<<<<<<< HEAD
     leftDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
     rightDrive.setBrakeMode(AbstractMotor::brakeMode::hold);
     Bar.setBrakeMode(AbstractMotor::brakeMode::hold);
     Intake.setBrakeMode(AbstractMotor::brakeMode::coast);
-=======
-    leftDrive.setBrakeMode(brake);
-    rightDrive.setBrakeMode(brake);
-    Bar.setBrakeMode(hold);
-    Intake.setBrakeMode(coast);
->>>>>>> parent of 363cce0 (basic PurePursuit structure)
 }
