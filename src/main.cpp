@@ -3,6 +3,16 @@
 using namespace okapi;
 //using namespace autolib;
  
+
+ 
+void initialize() {
+    pros::lcd::initialize();
+    pros::lcd::set_text(1, "Hello PROS User!");
+ 
+    pros::lcd::register_btn1_cb(on_center_button);
+}
+ 
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -18,6 +28,7 @@ void on_center_button() {
         pros::lcd::clear_line(2);
     }
 }
+<<<<<<< HEAD
 
 void setStateOdom(OdomDebug::state_t state) {
 	chassis->setState({state.x, state.y, state.theta});
@@ -29,21 +40,15 @@ void resetSensors() {
     LOdom.reset();
 }
 
+=======
+ 
+>>>>>>> parent of 363cce0 (basic PurePursuit structure)
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-
-void initialize() {
-    /*
-    pros::lcd::initialize();
-    pros::lcd::set_text(1, "Hello PROS User!");
-    pros::lcd::register_btn1_cb(on_center_button);
-     */
-
-}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -80,13 +85,13 @@ void autonomous() {
     setBrakes();
 
     chassis->setState({0_in, 0_in, 0_deg});
-    chassis->driveToPoint({0_ft, 1_ft});
+    chassis->driveToPoint({1_ft, 1_ft});
 
     barControl->setTarget(200);
     barControl->waitUntilSettled();
 
 	profileController->generatePath({
-        {0_ft, 1_ft, 0_deg}, 
+        {1_ft, 1_ft, 0_deg}, 
         {50_in, 29_in, 0_deg}}, 
         "A"
     );
@@ -116,15 +121,9 @@ void autonomous() {
  
  
 void opcontrol() {
-    OdomDebug display(lv_scr_act(), LV_COLOR_ORANGE);
-	display.setStateCallback(setStateOdom);
-	display.setResetCallback(resetSensors);
+ 
     while(true) {
         chassis->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
-
-        auto state = chassis->getState();
-        display.setData({state.x, state.y, state.theta},{LOdom.get(), ROdom.get()});
-
         pros::delay(10);
     }
 }

@@ -63,8 +63,6 @@
 extern "C" {
 #endif
 void autonomous(void);
-void resetSensors();
-void setState();
 void initialize(void);
 void disabled(void);
 void competition_initialize(void);
@@ -77,11 +75,13 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-#include <iostream>
-#include "okapi/api.hpp"
+//#include <iostream>
 #include "config.hpp"
+<<<<<<< HEAD
 //#include "voids.hpp"
 #include "odomDebug/odomDebug.hpp"
+=======
+>>>>>>> parent of 363cce0 (basic PurePursuit structure)
 #endif
 
 #endif  // _PROS_MAIN_H_
