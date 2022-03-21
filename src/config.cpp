@@ -40,7 +40,7 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
     )
     .withDimensions({AbstractMotor::gearset::blue}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.75_in, 8.25_in}, quadEncoderTPR}, StateMode::FRAME_TRANSFORMATION)
+    .withOdometry({{2.75_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN) //5.5_in, FRAME_TRANSFORMATION
     .buildOdometry();
 
 std::shared_ptr<AsyncMotionProfileController> profileController =
@@ -61,7 +61,7 @@ std::shared_ptr<AsyncPositionController<double, double>> barControl =
 
 void setBrakes(){
     leftDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
-    rightDrive.setBrakeMode(AbstractMotor::brakeMode::hold);
+    rightDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
     Bar.setBrakeMode(AbstractMotor::brakeMode::hold);
     Intake.setBrakeMode(AbstractMotor::brakeMode::coast);
 }

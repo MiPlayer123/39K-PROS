@@ -75,26 +75,54 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() { 
+    //Odom display
+    OdomDebug display(lv_scr_act(), LV_COLOR_ORANGE);
+	display.setStateCallback(setStateOdom);
+	display.setResetCallback(resetSensors);
+    auto state = chassis->getState();
+    //display.setData({state.y, state.x, state.theta},{LOdom.get(), ROdom.get()});
+
+    //inits
     Bar.tarePosition();
     barControl->reset();
     setBrakes();
-
-    chassis->setState({0_in, 0_in, 0_deg});
-    chassis->driveToPoint({0_ft, 1_ft});
-
+    /*
     barControl->setTarget(200);
+    chassis->setState({0_in, 0_in, 0_deg});
+    chassis->driveToPoint({1_ft, 0_ft});
     barControl->waitUntilSettled();
-
+    display.setData({state.y, state.x, state.theta},{LOdom.get(), ROdom.get()});
+    */
+    chassis->setState({0_ft, 0_ft, 0_deg});
+    /*
+    barControl->setTarget(200);
 	profileController->generatePath({
-        {0_ft, 1_ft, 0_deg}, 
-        {50_in, 29_in, 0_deg}}, 
+        {0_ft, 0_ft, 0_deg}, 
+        {2_ft, 2_ft, 270_deg},
+        {3_ft, 3_ft, 270_deg}}, 
         "A"
     );
 	profileController->setTarget("A");
 	profileController->waitUntilSettled();
-
+    //chassis->driveToPoint({3_ft, 1_ft});
+    barControl->waitUntilSettled();
     closeClaw();
-    
+    */
+    //barControl->setTarget(200);
+    //barControl->setTarget(150);
+    autolib::PathGenerator pathGenerator({1.0, 2.0, 4.0});
+    //barControl->setTarget(150);
+    pathGenerator.generatePath({ autolib::Pose{ 1_ft, 1_ft, 0_deg }, autolib::Pose{ 2_ft, 2_ft, 270_deg }, autolib::Pose{ 2_ft, 3_ft, 270_deg }}, 
+    std::string("test")
+    );
+    //barControl->setTarget(100);
+    autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_in );
+    barControl->setTarget(200);
+    barControl->waitUntilSettled();
+    //autolib::PurePursuitTriangle triangle = purePursuit.run( state, std::string("test") );
+    purePursuit.updateChassis( 50, purePursuit.run( state, std::string("test") ), chassis );
+    barControl->setTarget(100);
+    barControl->waitUntilSettled();
 }
  
  
@@ -119,11 +147,14 @@ void opcontrol() {
     OdomDebug display(lv_scr_act(), LV_COLOR_ORANGE);
 	display.setStateCallback(setStateOdom);
 	display.setResetCallback(resetSensors);
+
+    leftDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
+    rightDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
     while(true) {
         chassis->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
 
         auto state = chassis->getState();
-        display.setData({state.x, state.y, state.theta},{LOdom.get(), ROdom.get()});
+        display.setData({state.y, state.x, state.theta},{LOdom.get(), ROdom.get()});
 
         pros::delay(10);
     }

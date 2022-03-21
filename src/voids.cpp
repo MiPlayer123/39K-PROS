@@ -20,7 +20,7 @@ void closeClaw(){
 
 void grabRear(){
   RearClaw.set_value(true);
-  if(ClawInertial.get()<-10 && ClawInertial.get()>-20){
+  if(ClawInertial.get()<50 && ClawInertial.get()>-20){
     Pullback.set_value(true);
   }
 }

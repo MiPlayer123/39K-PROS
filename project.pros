@@ -4,6 +4,27 @@
         "project_name": "39K Worlds PROS",
         "target": "v5",
         "templates": {
+            "autolib": {
+                "location": "C:\\Users\\mikul\\AppData\\Roaming\\PROS\\templates\\autolib@0.9.3",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "autolib",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.1.6",
+                "system_files": [
+                    "firmware/autolib.a",
+                    "include/autolib/api.hpp",
+                    "include/autolib/auto/pathGenerator.hpp",
+                    "include/autolib/auto/purePursuit.hpp",
+                    "include/api.hpp",
+                    "include/autolib/util/messages.hpp",
+                    "include/okapi/impl/chassis/model/chassisModelFactory.hpp"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "0.9.3"
+            },
             "kernel": {
                 "location": "C:\\Users\\mikul\\AppData\\Roaming\\PROS\\templates\\kernel@3.5.4",
                 "metadata": {
