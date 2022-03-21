@@ -83,7 +83,6 @@ void opcontrol(void);
 #include "voids.hpp"
 #include "odomDebug/odomDebug.hpp"
 #include "odomDebug/odomDebug.hpp"
-#include "autolib/api.hpp"
 #endif
 
 #endif  // _PROS_MAIN_H_

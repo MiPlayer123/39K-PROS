@@ -19,7 +19,7 @@ MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
 IMU Intertial(19);
-IMU ClawInertial(12, IMUAxes::y);
+IMU ClawInertial(7, IMUAxes::y);
 RotationSensor LOdom(9);
 RotationSensor ROdom(16, true);
 RotationSensor BarRot(2);
