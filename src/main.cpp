@@ -76,6 +76,7 @@ void competition_initialize() {}
  */
 void autonomous() { 
     Bar.tarePosition();
+    barControl->reset();
     setBrakes();
 
     chassis->setState({0_in, 0_in, 0_deg});
@@ -92,7 +93,7 @@ void autonomous() {
 	profileController->setTarget("A");
 	profileController->waitUntilSettled();
 
-    closeClaw();
+    //closeClaw();
     
 }
  

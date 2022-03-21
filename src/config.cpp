@@ -60,10 +60,8 @@ std::shared_ptr<AsyncPositionController<double, double>> barControl =
   .build();
 
 void setBrakes(){
-    /*
-    leftDrive.setBrakeMode(brake);
-    rightDrive.setBrakeMode(brake);
-    Bar.setBrakeMode(hold);
-    Intake.setBrakeMode(coast);
-    */
+    leftDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
+    rightDrive.setBrakeMode(AbstractMotor::brakeMode::hold);
+    Bar.setBrakeMode(AbstractMotor::brakeMode::hold);
+    Intake.setBrakeMode(AbstractMotor::brakeMode::coast);
 }
