@@ -1,8 +1,7 @@
 #include "main.h"
 #include "okapi/api.hpp"
 using namespace okapi;
-//using namespace autolib;
- 
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -108,21 +107,19 @@ void autonomous() {
     barControl->waitUntilSettled();
     closeClaw();
     */
-    //barControl->setTarget(200);
-    //barControl->setTarget(150);
+
     autolib::PathGenerator pathGenerator({1.0, 2.0, 4.0});
-    //barControl->setTarget(150);
-    pathGenerator.generatePath({ autolib::Pose{ 1_ft, 1_ft, 0_deg }, autolib::Pose{ 2_ft, 2_ft, 270_deg }, autolib::Pose{ 2_ft, 3_ft, 270_deg }}, 
+    pathGenerator.generatePath({ autolib::Pose{ 1_ft, 1_ft, 0_deg }, autolib::Pose{ 2_ft, 2_ft, 270_deg }}, 
     std::string("test")
     );
-    //barControl->setTarget(100);
     autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_in );
-    barControl->setTarget(200);
-    barControl->waitUntilSettled();
-    //autolib::PurePursuitTriangle triangle = purePursuit.run( state, std::string("test") );
-    purePursuit.updateChassis( 50, purePursuit.run( state, std::string("test") ), chassis );
-    barControl->setTarget(100);
-    barControl->waitUntilSettled();
+    
+    auto auto_state = autolib::auto_chassis->getState();
+    autolib::PurePursuitTriangle triangle = purePursuit.run( auto_state, std::string("test") );
+    barControl->setTarget(150);
+    purePursuit.updateChassis( 50, triangle, autolib::auto_chassis );
+    //barControl->setTarget(100);
+    //barControl->waitUntilSettled();
 }
  
  
@@ -148,8 +145,8 @@ void opcontrol() {
 	display.setStateCallback(setStateOdom);
 	display.setResetCallback(resetSensors);
 
-    leftDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
-    rightDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
+    //leftDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
+    //rightDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
     while(true) {
         chassis->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
 

@@ -20,12 +20,24 @@ void closeClaw(){
 
 void grabRear(){
   RearClaw.set_value(true);
+  /*
   if(ClawInertial.get()<50 && ClawInertial.get()>-20){
     Pullback.set_value(true);
   }
+  */
+  pros::delay(250);
+  Pullback.set_value(true);
 }
 
 void releaseRear(){
   Pullback.set_value(false);
   RearClaw.set_value(false);
+}
+
+void startBar(int volt){
+  Bar.moveVoltage(volt*1000);
+}
+
+void stopBar(){
+  Bar.moveVoltage(0);
 }

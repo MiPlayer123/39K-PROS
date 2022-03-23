@@ -14,3 +14,7 @@ void closeClaw();
 void grabRear();
 
 void releaseRear();
+
+void startBar(int volt = 12);
+
+void stopBar();

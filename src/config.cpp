@@ -29,19 +29,33 @@ ADIButton FrontSense('C');
 pros::ADIDigitalOut Pullback('F');
 pros::ADIDigitalOut RearClaw('E');
 pros::ADIDigitalOut FrontClaw('D'); 
-pros::ADIDigitalOut Pn('H');
+pros::ADIDigitalOut Pn('G');
 
 std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
     .withMotors(leftDrive, rightDrive)
     .withGains(
-        {0.001, 0, 0.0001}, // Distance controller gains
-        {0.001, 0, 0.0001}, // Turn controller gains
-        {0.001, 0, 0.0001}  // Angle controller gains (helps drive straight)
+        {0.0035, 0, 0.00007}, // Distance controller gains
+        {0.0045, 0.001, 0}, // Turn controller gains
+        {0.002, 0, 0}  // Angle controller gains (helps drive straight)
     )
     .withDimensions({AbstractMotor::gearset::blue}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.75_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN) //5.5_in, FRAME_TRANSFORMATION
+    .withOdometry({{2.8_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN) //5.5_in, FRAME_TRANSFORMATION
     .buildOdometry();
+
+namespace autolib{
+    std::shared_ptr<OdomChassisController> auto_chassis = ChassisControllerBuilder()
+  	.withMotors(leftDrive, rightDrive)
+    .withGains(
+        {0.0035, 0, 0.00007}, // Distance controller gains
+        {0.0045, 0.001, 0}, // Turn controller gains
+        {0.002, 0, 0}  // Angle controller gains (helps drive straight)
+    )  
+  	.withSensors(LOdom, ROdom)
+	.withOdometry({{2.8_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN)
+	.withDimensions({AbstractMotor::gearset::blue}, {{4_in, 13.5_in}, imev5BlueTPR})
+	.buildOdometry();
+}
 
 std::shared_ptr<AsyncMotionProfileController> profileController =
 AsyncMotionProfileControllerBuilder()

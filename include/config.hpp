@@ -27,6 +27,7 @@ extern pros::ADIDigitalOut Pn;
 
 //SYSTEM CONTROLLERS
 extern std::shared_ptr<OdomChassisController> chassis;
+namespace autolib{extern std::shared_ptr<OdomChassisController> auto_chassis;}
 extern std::shared_ptr<AsyncMotionProfileController> profileController;
 extern std::shared_ptr<AsyncPositionController<double, double>> barControl;
 
