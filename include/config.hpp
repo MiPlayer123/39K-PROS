@@ -14,13 +14,11 @@ extern Motor Intake;
 
 // SENSORS
 extern IMU Inertial;
-extern IMU ClawInertial;
 extern RotationSensor LOdom;
 extern RotationSensor ROdom;
 extern ADIButton FrontSense;
 
 // PNEUMATICS
-extern pros::ADIDigitalOut Pullback;
 extern pros::ADIDigitalOut RearClaw;
 extern pros::ADIDigitalOut FrontClaw; 
 extern pros::ADIDigitalOut Pn;
