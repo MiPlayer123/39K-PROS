@@ -3,17 +3,6 @@
 
 using namespace okapi;
 
-#define BASE_DT 0.005
-#define BASE_INTEGRAL_THRESHOLD 20
-
-#define BASE_MIN_V 3 // in/s
-#define BASE_MAX_V 45 // in/s
-#define BASE_MAX_A (BASE_MAX_V / 0.1) // in/s/s
-
-const double MOTOR_PERCENT_TO_IN_PER_SEC = 0.436;
-const double TURNING_RADIUS = 7.90;
-const double EPSILON = 1e-5;
-
 void spinIntake();
 
 void stopIntake();
