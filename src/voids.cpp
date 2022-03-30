@@ -1,12 +1,10 @@
-#include <mutex>
-#include <thread>
 #include "main.h"
 #include "okapi/api.hpp"
 using namespace okapi;
 
 //For PID turns
 #define TURN_KP 0.05
-#define TURN_KI 0.002
+#define TURN_KI 0.0018
 #define TURN_KD 0.001
 #define TURN_MAX_A (BASE_MAX_V / 0.1)
 #define TURN_MAX_V (BASE_MAX_V * 0.7)
@@ -20,9 +18,13 @@ using namespace okapi;
 //For main inertial_drive
 #define   kp 4 //8/7 
 #define   ki .0008 //.5
-#define   kd .5 //.45
+#define   kd 1 //.45
 #define integral_threshold 10
 #define kp_c .45 //.42
+
+//For PD balance
+#define   kp_bal 1 
+#define   kd_bal .5 
 
 ///* Voids *///
 void spinIntake(){
@@ -43,9 +45,17 @@ void closeClaw(){
 
 void grabRear(){
   RearClaw.set_value(true);
+  /*
+  if(ClawInertial.get()<50 && ClawInertial.get()>-20){
+    Pullback.set_value(true);
+  }
+  */
+  pros::delay(250);
+  Pullback.set_value(true);
 }
 
 void releaseRear(){
+  Pullback.set_value(false);
   RearClaw.set_value(false);
 }
 
@@ -139,7 +149,7 @@ void inertial_drive(double target, double speed) {
   double LStart = LOdom.get();
   double RStart = ROdom.get();
   //Starting pos
-  double angle = get_rotation();
+  double angle = Inertial.get();
 
   // Accumulated error
   double integral_c = 0;
@@ -149,7 +159,7 @@ void inertial_drive(double target, double speed) {
 
   while (true) {
     // Calculate the error
-    double error_c = angle - get_rotation();
+    double error_c = angle - Inertial.get();
     double error1 = target - (LOdom.get()-LStart) * 2.8 * M_PI;
     double error2 = target - (ROdom.get()-RStart) * 2.8 * M_PI;
     double error;
@@ -194,6 +204,39 @@ void inertial_drive(double target, double speed) {
       break;
 		}
 }
+}
+
+void autobalance(){
+  float error=0;
+  float prevError = 0;
+  float derivative = 0;
+  float intialError;
+  intialError = Inertial_bal.get() - 0; 
+  leftDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
+  rightDrive.setBrakeMode(AbstractMotor::brakeMode::brake);
+  while(true){
+    int position = Inertial_bal.get();
+    //Propotional
+    error = position - 0;
+    //Derivative
+    derivative = error - prevError;
+
+    if( std::abs(error) < .5)  // we will stop within .5 deg from target
+    {
+       break;
+    }
+
+    double motorPower = error * kp_bal  + derivative * kd_bal;
+
+    pros::delay(5);
+
+    leftDrive.moveVoltage(motorPower);
+    rightDrive.moveVoltage(motorPower);
+
+    prevError = error;
+  }
+  leftDrive.moveVoltage(0);
+  rightDrive.moveVoltage(0);
 }
 
 ///* Kalman *///

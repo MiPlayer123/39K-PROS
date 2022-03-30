@@ -1,7 +1,22 @@
 #include "main.h"
 #include "okapi/api.hpp"
-#include "okapi/pathfinder/include/pathfinder.h"
 using namespace okapi;
+
+/**
+ * A callback function for LLEMU's center button.
+ *
+ * When this callback is fired, it will toggle line 2 of the LCD text between
+ * "I was pressed!" and nothing.
+ */
+void on_center_button() {
+    static bool pressed = false;
+    pressed = !pressed;
+    if (pressed) {
+        pros::lcd::set_text(2, "I was pressed!");
+    } else {
+        pros::lcd::clear_line(2);
+    }
+}
 
 void setStateOdom(OdomDebug::state_t state) {
 	chassis->setState({state.x, state.y, state.theta});
@@ -21,15 +36,12 @@ void resetSensors() {
  */
 
 void initialize() {
-    Inertial.reset(); //Change to calibrate later
-    ROdom.reset();
-    LOdom.reset();
-    initialize_kalman();
     /*
     pros::lcd::initialize();
     pros::lcd::set_text(1, "Hello PROS User!");
     pros::lcd::register_btn1_cb(on_center_button);
      */
+
 }
 
 /**
@@ -62,27 +74,34 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() { 
+    //Odom display
+    OdomDebug display(lv_scr_act(), LV_COLOR_ORANGE);
+	display.setStateCallback(setStateOdom);
+	display.setResetCallback(resetSensors);
+    auto state = chassis->getState();
+    //display.setData({state.y, state.x, state.theta},{LOdom.get(), ROdom.get()});
+
     //inits
     Bar.tarePosition();
     barControl->reset();
     setBrakes();
     chassis->setState({0_ft, 0_ft, 0_deg});
 
-    /*
-    barControl->setTarget(200);
-    chassis->setState({0_in, 0_in, 0_deg});
-    chassis->driveToPoint({1_ft, 0_ft});
-    barControl->waitUntilSettled();
-    display.setData({state.y, state.x, state.theta},{LOdom.get(), ROdom.get()});
-    */
+
+    //barControl->setTarget(200);
+    //inertial_drive(12,50);
+    //barControl->setTarget(200);
+    //turn_absolute_inertial(90);
+    //chassis->driveToPoint({0_ft, 1_ft});
+    //barControl->waitUntilSettled();
+
     //chassis->moveDistance(1_ft);
     //chassis->turnAngle(90_deg);
-    /*
+    
     barControl->setTarget(200);
 	profileController->generatePath({
         {0_ft, 0_ft, 0_deg}, 
-        {2_ft, 2_ft, 270_deg},
-        {3_ft, 3_ft, 270_deg}}, 
+        {5_ft, 2_ft, 270_deg}}, 
         "A"
     );
 	profileController->setTarget("A");
@@ -90,20 +109,18 @@ void autonomous() {
     //chassis->driveToPoint({3_ft, 1_ft});
     barControl->waitUntilSettled();
     closeClaw();
-    */
     
+    /*
     autolib::PathGenerator pathGenerator({1.0, 2.0, 4.0});
     pathGenerator.generatePath({ autolib::Pose{ 1_ft, 1_ft, 0_deg }, autolib::Pose{ 2_ft, 2_ft, 270_deg }}, 
     std::string("test")
     );
-    autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_ft );
+    autolib::PurePursuit purePursuit( pathGenerator.getPaths(), 1_in );
+    
     auto auto_state = autolib::auto_chassis->getState();
-    //barControl->setTarget(100);
     //autolib::PurePursuitTriangle triangle = purePursuit.run( auto_state, std::string("test") );
-    //barControl->setTarget(150);
     purePursuit.updateChassis( 50, purePursuit.run( auto_state, std::string("test")), autolib::auto_chassis );
-    //barControl->setTarget(100);
-    //barControl->waitUntilSettled();
+    */
 }
  
  

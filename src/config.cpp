@@ -19,12 +19,14 @@ MotorGroup rightDrive({RightRear, RightMid, RightFront});
 
 // SENSORS
 IMU Inertial(19);
+IMU Inertial_bal(19, IMUAxes::y);
 RotationSensor LOdom(9, true);
 RotationSensor ROdom(16);
 RotationSensor BarRot(2);
 ADIButton FrontSense('C');
 
 // PNEUMATICS
+pros::ADIDigitalOut Pullback('F');
 pros::ADIDigitalOut RearClaw('E');
 pros::ADIDigitalOut FrontClaw('D'); 
 pros::ADIDigitalOut Pn('G');
@@ -32,22 +34,22 @@ pros::ADIDigitalOut Pn('G');
 std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
     .withMotors(leftDrive, rightDrive)
     .withGains(
-        {0.001, 0, 0.0001}, // Distance controller gains
-        {0.001, 0.0, 0.0001}, // Turn controller gains
-        {0.001, 0, 0}  // Angle controller gains (helps drive straight)
+        {0.0035, 0, 0.00007}, // Distance controller gains
+        {0.0045, 0.001, 0}, // Turn controller gains
+        {0.002, 0, 0}  // Angle controller gains (helps drive straight)
     )
-    .withDimensions({AbstractMotor::gearset::blue, 3.0/7.0}, {{4.125_in, 13.2_in}, imev5BlueTPR})
+    .withDimensions({AbstractMotor::gearset::blue}, {{4_in, 13.5_in}, imev5BlueTPR})
     .withSensors(LOdom, ROdom)
-    .withOdometry({{2.8_in, 4.7_in}, quadEncoderTPR}, StateMode::CARTESIAN) //{{2.8_in, 4.7_in}, quadEncoderTPR}, FRAME_TRANSFORMATION
+    .withOdometry({{2.8_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN) //5.5_in, FRAME_TRANSFORMATION
     .buildOdometry();
 
 namespace autolib{
     std::shared_ptr<OdomChassisController> auto_chassis = ChassisControllerBuilder()
   	.withMotors(leftDrive, rightDrive)
     .withGains(
-        {0.001, 0, 0.0001}, // Distance controller gains
-        {0.001, 0.0, 0.0001}, // Turn controller gains
-        {0.001, 0, 0}  // Angle controller gains (helps drive straight)
+        {0.0035, 0, 0.00007}, // Distance controller gains
+        {0.0045, 0.001, 0}, // Turn controller gains
+        {0.002, 0, 0}  // Angle controller gains (helps drive straight)
     )  
   	.withSensors(LOdom, ROdom)
 	.withOdometry({{2.8_in, 8_in}, quadEncoderTPR}, StateMode::CARTESIAN)

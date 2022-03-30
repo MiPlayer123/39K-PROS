@@ -36,6 +36,8 @@ void turn_rel_inertial(double target);
 
 void inertial_drive(double target, double speed);
 
+void autobalance();
+
 void initialize_kalman();
 
 double get_rotation();
